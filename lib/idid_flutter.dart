@@ -2,12 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+const idid_plugin_channel = 'br.com.idid.sdk/idid_plugin_channel';
+
+/*
+* Maybe add some convenient data structures to use as payloads
+*
+* */
+
 class IdidFlutter {
   static const MethodChannel _channel =
-      const MethodChannel('idid_flutter');
+      const MethodChannel(idid_plugin_channel);
 
-  static Future<String> get platformVersion async {
-    final String version = await _channel.invokeMethod('getPlatformVersion');
-    return version;
+  static Future<void> provision(Map<String, dynamic> payload) async {
+    return await _channel.invokeMethod('provision', payload);
+  }
+
+  static Future<void> authorize(Map<String, dynamic> payload) async {
+    return await _channel.invokeMethod('authorize', payload);
   }
 }

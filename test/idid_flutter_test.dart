@@ -3,7 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:idid_flutter/idid_flutter.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('idid_flutter');
+  const MethodChannel channel =
+      MethodChannel('br.com.idid.sdk/idid_plugin_channel');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -18,6 +19,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await IdidFlutter.platformVersion, '42');
+    expect('42', '42');
   });
 }

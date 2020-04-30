@@ -8,10 +8,11 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
-/** IdidFlutterPlugin */
+const val ididPluginChannel = "br.com.idid.sdk/idid_plugin_channel"
+
 class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler {
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        val channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "idid_flutter")
+        val channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), ididPluginChannel)
         channel.setMethodCallHandler(IdidFlutterPlugin());
     }
 
@@ -27,19 +28,22 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler {
     companion object {
         @JvmStatic
         fun registerWith(registrar: Registrar) {
-            val channel = MethodChannel(registrar.messenger(), "idid_flutter")
+            val channel = MethodChannel(registrar.messenger(), ididPluginChannel)
             channel.setMethodCallHandler(IdidFlutterPlugin())
         }
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-        if (call.method == "getPlatformVersion") {
-            result.success("Android ${android.os.Build.VERSION.RELEASE}")
-        } else {
-            result.notImplemented()
+        when (call.method) {
+            "provision" -> provision(call, result)
+            "authorize" -> authorize(call, result)
         }
     }
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     }
+
+    private fun provision(call: MethodCall, result: Result) {}
+
+    private fun authorize(call: MethodCall, result: Result) {}
 }
