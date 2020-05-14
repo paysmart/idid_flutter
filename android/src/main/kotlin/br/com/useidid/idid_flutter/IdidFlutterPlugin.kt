@@ -1,5 +1,6 @@
 package br.com.useidid.idid_flutter
 
+import android.util.Log
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -33,9 +34,12 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler {
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) = Unit
 
-    private fun provision(call: MethodCall, result: Result) {}
+    private fun provision(call: MethodCall, result: Result) {
+        Log.d("____", "Provision called")
+    }
 
     private fun authorize(call: MethodCall, result: Result) {
         //IDidAuth.instance.authorize()
+        Log.d("____", "Authorization called")
     }
 }
