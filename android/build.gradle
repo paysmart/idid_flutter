@@ -17,6 +17,10 @@ buildscript {
 repositories {
     maven {
         url "https://maven.pkg.github.com/paysmart-dev/idid-secure-sdk"
+        credentials {
+            username "bgpinto"
+            password "bdf415fad17ac6b85935c36ef7883d317e79375d"
+        }
     }
 }
 
@@ -40,7 +44,7 @@ android {
 
 
 dependencies {
-    implementation "br.com.idid.sdk:idid-secure-sdk:0.0.1"
+    implementation "br.com.idid.sdk:idid-secure-sdk:1.1.4"
 }
 
 dependencies {
