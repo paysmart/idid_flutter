@@ -1,5 +1,6 @@
 package br.com.useidid.idid_flutter
 
+import android.content.Context
 import android.util.Log
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -11,17 +12,17 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 
 const val ididPluginChannel = "br.com.idid.sdk/idid_plugin_channel"
 
-class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler {
+class IdidFlutterPlugin(val mContext: Context) : FlutterPlugin, MethodCallHandler {
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        val channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), ididPluginChannel)
-        channel.setMethodCallHandler(IdidFlutterPlugin());
+        val channel = MethodChannel(flutterPluginBinding.flutterEngine.getDartExecutor(), ididPluginChannel)
+        channel.setMethodCallHandler(IdidFlutterPlugin(flutterPluginBinding.applicationContext));
     }
 
     companion object {
         @JvmStatic
         fun registerWith(registrar: Registrar) {
             val channel = MethodChannel(registrar.messenger(), ididPluginChannel)
-            channel.setMethodCallHandler(IdidFlutterPlugin())
+            channel.setMethodCallHandler(IdidFlutterPlugin(registrar.activeContext()))
         }
     }
 
