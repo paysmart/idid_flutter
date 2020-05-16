@@ -3,6 +3,7 @@ package br.com.useidid.idid_flutter
 import android.content.Context
 import android.util.Log
 import androidx.annotation.NonNull
+import br.com.idid.sdk.IDidAuth
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -40,7 +41,8 @@ class IdidFlutterPlugin(val mContext: Context) : FlutterPlugin, MethodCallHandle
     }
 
     private fun authorize(call: MethodCall, result: Result) {
-        //IDidAuth.instance.authorize()
         Log.d("____", "Authorization called")
+        IDidAuth.instance.authorize(call.argument<String>("authorizationContent")!!, mContext)
+        result.success("ok")
     }
 }
