@@ -13,7 +13,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 
 const val ididPluginChannel = "br.com.idid.sdk/idid_plugin_channel"
 
-class IdidFlutterPlugin(val mContext: Context) : FlutterPlugin, MethodCallHandler {
+class IdidFlutterPlugin(private val mContext: Context) : FlutterPlugin, MethodCallHandler {
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val channel = MethodChannel(flutterPluginBinding.flutterEngine.getDartExecutor(), ididPluginChannel)
         channel.setMethodCallHandler(IdidFlutterPlugin(flutterPluginBinding.applicationContext));
@@ -41,8 +41,9 @@ class IdidFlutterPlugin(val mContext: Context) : FlutterPlugin, MethodCallHandle
     }
 
     private fun authorize(call: MethodCall, result: Result) {
-        Log.d("____", "Authorization called")
-        IDidAuth.instance.authorize(call.argument<String>("authorizationContent")!!, mContext)
+        IDidAuth.getInstance(mContext)
+                .authorize(call.argument<String>("authorizationContent")!!)
+
         result.success("ok")
     }
 }
