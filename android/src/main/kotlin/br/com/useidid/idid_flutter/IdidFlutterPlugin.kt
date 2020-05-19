@@ -27,14 +27,14 @@ class IdidFlutterPlugin(val mContext: Context) : FlutterPlugin, MethodCallHandle
         }
     }
 
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) = Unit
+
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
             "provision" -> provision(call, result)
             "authorize" -> authorize(call, result)
         }
     }
-
-    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) = Unit
 
     private fun provision(call: MethodCall, result: Result) {
         Log.d("____", "Provision called")
