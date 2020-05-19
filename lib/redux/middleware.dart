@@ -1,7 +1,8 @@
 import 'package:idid_flutter/idid_flutter.dart';
+import 'package:idid_flutter/redux/actions.dart';
 import 'package:redux/redux.dart';
 
-class AuthorizeTransactionMiddleware<T> extends MiddlewareClass<T> {
+class _AuthorizeTransactionMiddleware<T> extends MiddlewareClass<T> {
   @override
   call(Store<T> store, action, next) async {
     await IdidFlutter.authorize(action.toJson());
@@ -10,7 +11,7 @@ class AuthorizeTransactionMiddleware<T> extends MiddlewareClass<T> {
   }
 }
 
-class ProvisionMiddleware<T> extends MiddlewareClass<T> {
+class _ProvisionMiddleware<T> extends MiddlewareClass<T> {
   @override
   call(Store<T> store, action, next) async {
     await IdidFlutter.provision(action.toJson());
@@ -18,3 +19,9 @@ class ProvisionMiddleware<T> extends MiddlewareClass<T> {
     return;
   }
 }
+
+List<Middleware<T>> createIDidMiddleware<T>() => [
+      TypedMiddleware<T, ProvisionAction>(_ProvisionMiddleware<T>()),
+      TypedMiddleware<T, AuthorizeTransactionAction>(
+          _AuthorizeTransactionMiddleware<T>())
+    ];
