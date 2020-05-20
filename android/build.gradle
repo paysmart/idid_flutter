@@ -46,11 +46,16 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 
 dependencies {
-    implementation "br.com.idid.sdk:idid-secure-sdk:+"
+    implementation "br.com.idid.sdk:idid-secure-sdk:1.2.1"
 }
 
 dependencies {
