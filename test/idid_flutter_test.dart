@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:idid_flutter/idid_flutter.dart';
 
 void main() {
   const MethodChannel channel =
