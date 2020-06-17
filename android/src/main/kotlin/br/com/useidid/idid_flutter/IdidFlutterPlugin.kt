@@ -67,7 +67,7 @@ class IdidFlutterPlugin(private val mContext: Context) : FlutterPlugin, MethodCa
                         mPANSequence = 0,
                         mDerivationKey = call.argument<String>("derivationKey")!!,
                         mTrack2EqData = call.argument<String>("track2")!!,
-                        mExpirationDate = 1735576301
+                        mExpirationDate = 1734460825000
                 )
         )
 

@@ -55,7 +55,7 @@ android {
 
 
 dependencies {
-    implementation "br.com.idid.sdk:idid-secure-sdk:1.4.1"
+    implementation "br.com.idid.sdk:idid-secure-sdk:1.4.2"
 }
 
 dependencies {
