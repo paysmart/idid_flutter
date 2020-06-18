@@ -20,8 +20,17 @@ class _ProvisionMiddleware<T> extends MiddlewareClass<T> {
   }
 }
 
+class _IsProvisionedMiddleware<T> extends MiddlewareClass<T> {
+  @override
+  call(Store<T> store, action, next) async {
+    store.dispatch(IsProvisionedAction(await IdidFlutter.isProvisioned));
+  }
+}
+
 List<Middleware<T>> createIDidMiddleware<T>() => [
       TypedMiddleware<T, ProvisionAction>(_ProvisionMiddleware<T>()),
+      TypedMiddleware<T, QueryProvisionStateAction>(
+          _IsProvisionedMiddleware<T>()),
       TypedMiddleware<T, AuthorizeTransactionAction>(
           _AuthorizeTransactionMiddleware<T>())
     ];

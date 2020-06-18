@@ -40,7 +40,12 @@ class IdidFlutterPlugin(private val mContext: Context) : FlutterPlugin, MethodCa
         when (call.method) {
             "provision" -> provision(call, result)
             "authorize" -> authorize(call, result)
+            "isProvisioned" -> isProvision(call, result)
         }
+    }
+
+    private fun isProvision(call: MethodCall, result: Result) {
+        result.success(IDidAuth.getInstance(mContext).isProvisioned)
     }
 
     private fun provision(call: MethodCall, result: Result) {

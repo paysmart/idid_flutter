@@ -7,6 +7,14 @@ class AuthorizeTransactionAction {
       {'authorizationContent': authorizationContent};
 }
 
+class QueryProvisionStateAction {}
+
+class IsProvisionedAction {
+  final bool isProvisioned;
+
+  IsProvisionedAction(this.isProvisioned);
+}
+
 class ProvisionAction {
   final String name;
   final String email;
