@@ -10,6 +10,7 @@ import br.com.idid.sdk.messages.IDidProvisionPayload
 import br.com.idid.sdk.messages.IDidProvisionSucceed
 import br.com.idid.sdk.models.IDidDeliveryAddress
 import br.com.idid.sdk.provisioning.IDidDataPrepSpec
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -73,13 +74,11 @@ class IdidFlutterPlugin(private val mContext: Context) : FlutterPlugin, MethodCa
 
         val callback = object : IDidProvisionCallback(payload) {
             override fun onError(error: IDidProvisionFailed?) {
-                Log.d("____", "Provision Failed ")
-                result.success("fail")
+                Log.d("____", "Provision Failed ${error?.message}")
             }
 
             override fun onSuccess(value: IDidProvisionSucceed?) {
-                Log.d("____", "Provision Succeed ")
-                result.success("succeed")
+                Log.d("____", "Provision Succeed with id = ${value?.cardId}")
             }
         }
 
