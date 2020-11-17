@@ -14,20 +14,7 @@ buildscript {
     }
 }
 
-def pluginSettings = new Properties()
-
-file("plugin.properties").withInputStream {
-    pluginSettings.load(it)
-}
-
 repositories {
-    maven {
-        url "https://maven.pkg.github.com/paysmart-dev/idid-secure-sdk"
-        credentials {
-            username pluginSettings["GH_USER"]
-            password pluginSettings["GH_TOKEN"] // remover coisas hardcodeds
-        }
-    }
 }
 
 apply plugin: 'com.android.library'
@@ -55,9 +42,9 @@ android {
 
 
 dependencies {
-    implementation "br.com.idid.sdk:idid-secure-sdk:1.4.3"
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation project(path: ':idid-secure-sdk-1.4.3')
 }
