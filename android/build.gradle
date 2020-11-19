@@ -14,14 +14,18 @@ buildscript {
     }
 }
 
-repositories {
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -46,5 +50,5 @@ dependencies {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation project(path: ':idid-secure-sdk-1.4.3')
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
 }

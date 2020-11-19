@@ -1,4 +1,3 @@
-include ':idid-secure-sdk-1.4.3'
 include ':app'
 
 def flutterProjectRoot = rootProject.projectDir.parentFile.toPath()
