@@ -1,0 +1,27 @@
+name: idid_flutter
+description: Official Idid flutter plugin.
+version: 2.0.0
+author: Bruno Giacobo Pinto / Gabriel Manzke Lindemann
+homepage: https://github.com/paysmart/idid_flutter
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.20.0 <2.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  plugin:
+    platforms:
+      android:
+        package: br.com.paysmart.idid_flutter
+        pluginClass: IdidFlutterPlugin
+      ios:
+        pluginClass: IdidFlutterPlugin
