@@ -5,9 +5,8 @@ import android.util.Log
 import androidx.annotation.NonNull
 import br.com.idid.sdk.IDidAuth
 import br.com.idid.sdk.IDidProvisionCallback
-import br.com.idid.sdk.messages.IDidProvisionFailed
-import br.com.idid.sdk.messages.IDidProvisionPayload
-import br.com.idid.sdk.messages.IDidProvisionSucceed
+import br.com.idid.sdk.IDidUnProvisionCallback
+import br.com.idid.sdk.messages.*
 import br.com.idid.sdk.models.IDidDeliveryAddress
 import br.com.idid.sdk.provisioning.IDidDataPrepSpec
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -33,20 +32,21 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
         when (call.method) {
-            "provision" -> provision(call, result)
+            "isProvisioned" -> isProvisioned(result)
+            "unProvision" -> unProvision(call, result)
             "authorize" -> authorize(call, result)
-            "isProvisioned" -> isProvisioned(call, result)
+            "provision" -> provision(call, result)
         }
     }
 
     private fun provision(call: MethodCall, result: Result) {
 
         val payload = IDidProvisionPayload(
-                userName = call.argument<String>("name")!!,
-                userEmail = call.argument<String>("email")!!,
-                issuerId = call.argument<String>("issuerId")!!,
                 phoneNumber = call.argument<String>("phoneNumber")!!,
                 documentId = call.argument<String>("documentId")!!,
+                issuerId = call.argument<String>("issuerId")!!,
+                userEmail = call.argument<String>("email")!!,
+                userName = call.argument<String>("name")!!,
                 address = IDidDeliveryAddress(
                         streetAddress = "Manoelito de Ornelas",
                         neighborhood = "Praia de Belas",
@@ -55,33 +55,53 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         zipcode = "90110230",
                         streetNumber = "55",
                         country = "Brazil",
+                        addressType = "R",
                         state = "RS"
                 ),
                 dataPrep = IDidDataPrepSpec(
-                        mKDI = 2,
-                        mScheme = "ELO",
-                        mProductType = "Debit",
-                        mPANSequence = 0,
                         mDerivationKey = call.argument<String>("derivationKey")!!,
                         mTrack2EqData = call.argument<String>("track2")!!,
-                        mExpirationDate = 1734460825000
+                        mExpirationDate = call.argument<String>("expirationDate"),
+                        mProductType = "Debit",
+                        mPANSequence = 0,
+                        mScheme = "ELO",
+                        mKDI = 2
                 )
         )
 
         val callback = object : IDidProvisionCallback(payload) {
             override fun onError(error: IDidProvisionFailed?) {
                 Log.d("____", "Provision Failed ${error?.message}")
+                result.success("error!")
             }
 
             override fun onSuccess(value: IDidProvisionSucceed?) {
                 Log.d("____", "Provision Succeed with id = ${value?.cardId}")
+                result.success("success!")
             }
         }
 
-        Log.d("____", "WILL START PROVISION!")
         IDidAuth.getInstance(context).provision(callback)
-        result.success("ok")
+    }
 
+    private fun unProvision(call: MethodCall, result: Result) {
+        val callback = object : IDidUnProvisionCallback(
+                mPayload = IDidUnProvisionPayload(
+                        issuerId = call.argument<String>("issuerId")!!
+                )
+        ) {
+            override fun onError(error: IDidUnProvisionFailed?) {
+                Log.d("____", "Un provision Failed ${error?.message}")
+                result.success("error!")
+            }
+
+            override fun onSuccess(value: IDidUnProvisionSucceed?) {
+                Log.d("____", "Un provision Succeed")
+                result.success("success!")
+            }
+        }
+
+        IDidAuth.getInstance(context).unProvision(callback)
     }
 
     private fun authorize(call: MethodCall, result: Result) {
@@ -89,7 +109,7 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         result.success("ok")
     }
 
-    private fun isProvisioned(call: MethodCall, result: Result) {
+    private fun isProvisioned(result: Result) {
         result.success(IDidAuth.getInstance(context).isProvisioned)
     }
 

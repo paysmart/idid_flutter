@@ -11,6 +11,9 @@ class IdidFlutter {
   static Future provision(Map<String, dynamic> payload) =>
       _channel.invokeMethod('provision', payload);
 
+  static Future unProvision(Map<String, dynamic> payload) =>
+      _channel.invokeMethod('unProvision', payload);
+
   static Future authorize(Map<String, dynamic> payload) =>
       _channel.invokeMethod('authorize', payload);
 }
