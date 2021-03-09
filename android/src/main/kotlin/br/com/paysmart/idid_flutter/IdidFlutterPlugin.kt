@@ -60,8 +60,8 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 ),
                 dataPrep = IDidDataPrepSpec(
                         mDerivationKey = call.argument<String>("derivationKey")!!,
+                        mExpirationDate = call.argument<Long>("expirationDate")!!,
                         mTrack2EqData = call.argument<String>("track2")!!,
-                        mExpirationDate = call.argument<String>("expirationDate"),
                         mProductType = "Debit",
                         mPANSequence = 0,
                         mScheme = "ELO",
