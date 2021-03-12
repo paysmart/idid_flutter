@@ -60,7 +60,6 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 ),
                 dataPrep = IDidDataPrepSpec(
                         mDerivationKey = call.argument<String>("derivationKey")!!,
-                        mExpirationDate = call.argument<Long>("expirationDate")!!,
                         mTrack2EqData = call.argument<String>("track2")!!,
                         mProductType = "Debit",
                         mPANSequence = 0,
@@ -71,13 +70,11 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
         val callback = object : IDidProvisionCallback(payload) {
             override fun onError(error: IDidProvisionFailed?) {
-                Log.d("____", "Provision Failed ${error?.message}")
-                result.success("error!")
+                result.success("Failed")
             }
 
             override fun onSuccess(value: IDidProvisionSucceed?) {
-                Log.d("____", "Provision Succeed with id = ${value?.cardId}")
-                result.success("success!")
+                result.success("Succeeded")
             }
         }
 
@@ -92,12 +89,12 @@ class IdidFlutterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         ) {
             override fun onError(error: IDidUnProvisionFailed?) {
                 Log.d("____", "Un provision Failed ${error?.message}")
-                result.success("error!")
+                result.success("Failed")
             }
 
             override fun onSuccess(value: IDidUnProvisionSucceed?) {
                 Log.d("____", "Un provision Succeed")
-                result.success("success!")
+                result.success("Succeeded")
             }
         }
 
