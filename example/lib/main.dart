@@ -13,7 +13,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<bool> isProvisioned;
+  late Future<dynamic> isProvisioned;
 
   @override
   void initState() {
@@ -45,13 +45,13 @@ class _MyAppState extends State<MyApp> {
                 child: Text('PROVISIONAR!'),
                 onPressed: () async {
                   print('AAAAAAAAAAAAAAAAAAA: ${await IdidFlutter.provision({
-                    'issuerId': '13432',
-                    'documentId': '31534054090',
+                    'issuerId': '1',
+                    'documentId': '04312541094',
                     'phoneNumber': '51992915698',
-                    'email': 'teste@gmail.com',
-                    'name': 'Usuário de teste',
+                    'email': 'gabriel.lindemann@paysmart.com.br',
+                    'name': 'Gabriel Manzke Lindemann',
                     'derivationKey': 'AAAAAAAAAAAAAAAABBBBBBBBBBBBBBBB',
-                    'expirationDate': 1734460825000,
+                    'expirationDate': "2024-12-01",
                     'track2': '5092573092570005=24126004081010000000'
                   })}');
                 },
@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
                     "authorizationContent": json.encode({
                       "amount": 1.0,
                       "orderID": 11624,
-                      "consumerID": 123618,
+                      "consumerID": 43,
                       "installmentPrice": 1.0,
                       "version": "1.0.1",
                       "transactionID": 11687,
@@ -80,7 +80,7 @@ class _MyAppState extends State<MyApp> {
                       "totalInstallments": 1,
                       "merchantID": 11111,
                       "countryCode": "076",
-                      "cardID": 123572,
+                      "cardID": 42,
                       "merchantTxID": 11111,
                       "text": "TESTE",
                       "acquirerID": 1,
