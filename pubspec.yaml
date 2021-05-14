@@ -1,12 +1,12 @@
 name: idid_flutter
 description: Official Idid flutter plugin.
-version: 5.0.0
+version: 5.0.1
 author: Bruno Giacobo Pinto / Gabriel Manzke Lindemann / Bruno Rodrigues Bartolomasi
 homepage: https://github.com/paysmart/idid_flutter
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.20.0 <3.0.0"
+  flutter: ">=2.0.0 <3.0.0"
 
 dependencies:
   flutter:
