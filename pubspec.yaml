@@ -1,7 +1,7 @@
 name: idid_flutter
 description: Official Idid flutter plugin.
-version: 5.0.7
-author: Bruno Giacobo Pinto / Gabriel Manzke Lindemann / Bruno Rodrigues Bartolomasi / André Felipe Silva
+version: 5.0.8
+author: Bruno Giacobo Pinto / Gabriel Manzke Lindemann / Bruno Rodrigues Bartolomasi / André Felipe Silva / Antônio Gabriel de Carvalho
 homepage: https://github.com/paysmart/idid_flutter
 
 environment:
