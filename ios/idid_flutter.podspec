@@ -15,9 +15,15 @@ A new Flutter plugin.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
+  s.dependency 'Alamofire', '~> 5.4.1'
+  s.dependency 'CryptoSwift', '~> 1.3.8'
   s.platform = :ios, '8.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
+
+  s.preserve_paths = 'iDid.xcframework'
+  s.xcconfig = { 'OTHER_LDFLAGS' => '-framework iDid' }
+  s.vendored_frameworks = 'iDid.xcframework'
 end

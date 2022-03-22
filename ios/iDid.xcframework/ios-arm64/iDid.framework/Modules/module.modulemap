@@ -1,0 +1,11 @@
+framework module iDid {
+  umbrella header "iDid.h"
+
+  export *
+  module * { export * }
+}
+
+module iDid.Swift {
+    header "iDid-Swift.h"
+    requires objc
+}

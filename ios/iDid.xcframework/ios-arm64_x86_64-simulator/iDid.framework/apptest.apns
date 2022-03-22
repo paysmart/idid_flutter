@@ -1,0 +1,11 @@
+{
+    "aps" : {
+        "alert" : {
+            "title" : "Confirmação de compra",
+            "subtitle" : "R$ 1.000,00",
+            "body" : "Você confirma esta compra?"
+        },
+        "category" : "ididNotificationCenter",
+    },
+    "Simulator Target Bundle": "paysmart.iDidApp"
+}

@@ -44,16 +44,27 @@ class _MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text('PROVISIONAR!'),
                 onPressed: () async {
-                  print('AAAAAAAAAAAAAAAAAAA: ${await IdidFlutter.provision({
-                    'issuerId': '123123',
-                    'documentId': '03543632043',
-                    'phoneNumber': '51996886684',
-                    'email': 'antonio.carvalho@paysmart.com.br',
-                    'name': 'Antonio Gabriel de Carvalho',
-                    'derivationKey': 'AAAAAAAAAAAAAAAACCCCCCCCCCCCCCCC',
-                    'expirationDate': "2024-12-01",
-                    'track2': '5092573092570005=24126004081010000000'
-                  })}');
+                  print('calling provision...');
+                  try {
+                    final result = await IdidFlutter.provision({
+                      'derivationKey': '7A61136DA429FEFE16BC047615984F19',
+                      'phoneNumber': '51996886684',
+                      'documentId': '03543632043',
+                      'issuerId': '1',
+                      'track2': '5092670053401782=27056009171010000000',
+                      'email': 'antonio.carvalho@paysmart.com.br',
+                      'name': 'Antonio Gabriel de Carvalho',
+                      // 'expirationDate': "2024-12-01",
+                    });
+                    print('provision result: $result');
+                    setState(() {
+                      _isProvisioned();
+                    });
+                  } on Exception catch (e) {
+                    print('provision failed: $e');
+                  } catch (error) {
+                    print('provision failed: $error');
+                  }
                 },
               ),
               ElevatedButton(
@@ -63,7 +74,7 @@ class _MyAppState extends State<MyApp> {
                     "authorizationContent": json.encode({
                       "amount": 1.0,
                       "orderID": 13223,
-                      "consumerID": 123807,
+                      "consumerID": 123844,
                       "installmentPrice": 1.0,
                       "version": "1.0.1",
                       "transactionID": 13171,
@@ -92,7 +103,7 @@ class _MyAppState extends State<MyApp> {
               ElevatedButton(
                 child: Text('DESPROVISIONAR!'),
                 onPressed: () {
-                  IdidFlutter.unProvision({'issuerId': '123123'});
+                  IdidFlutter.unProvision({'issuerId': '1'});
                 },
               ),
             ],
