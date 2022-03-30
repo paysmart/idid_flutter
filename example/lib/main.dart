@@ -69,41 +69,61 @@ class _MyAppState extends State<MyApp> {
               ),
               ElevatedButton(
                 child: Text('AUTORIZAR!'),
-                onPressed: () {
-                  IdidFlutter.authorize({
-                    "authorizationContent": json.encode({
-                      "amount": 1.0,
-                      "orderID": 13223,
-                      "consumerID": 123844,
-                      "installmentPrice": 1.0,
-                      "version": "1.0.1",
-                      "transactionID": 13171,
-                      "products": [
-                        {
-                          "quantity": 1,
-                          "description": "Teclado Gamer C3",
-                          "unityPrice": 1.0,
-                          "sku": 3333
-                        }
-                      ],
-                      "nomeDoComercio": "MUXI",
-                      "issuerID": 123123,
-                      "totalInstallments": 1,
-                      "merchantID": 11111,
-                      "countryCode": "076",
-                      "cardID": 123824,
-                      "merchantTxID": 11111,
-                      "text": "TESTE",
-                      "acquirerID": 1,
-                      "currencyCode": "BRL"
-                    })
-                  });
+                onPressed: () async {
+                  print('calling authorize...');
+                  try {
+                    final result = await IdidFlutter.authorize({
+                      "authorizationContent": json.encode({
+                        "amount": 1.0,
+                        "orderID": 13223,
+                        "consumerID": 123844,
+                        "installmentPrice": 1.0,
+                        "version": "1.0.1",
+                        "transactionID": 13171,
+                        "products": [
+                          {
+                            "quantity": 1,
+                            "description": "Teclado Gamer C3",
+                            "unityPrice": 1.0,
+                            "sku": 3333
+                          }
+                        ],
+                        "nomeDoComercio": "MUXI",
+                        "issuerID": 123123,
+                        "totalInstallments": 1,
+                        "merchantID": 11111,
+                        "countryCode": "076",
+                        "cardID": 123824,
+                        "merchantTxID": 11111,
+                        "text": "TESTE",
+                        "acquirerID": 1,
+                        "currencyCode": "BRL"
+                      })
+                    });
+                    print('authorize result: $result');
+                  } on Exception catch (e) {
+                    print('authorize failed: $e');
+                  } catch (error) {
+                    print('authorize failed: $error');
+                  }
                 },
               ),
               ElevatedButton(
                 child: Text('DESPROVISIONAR!'),
-                onPressed: () {
-                  IdidFlutter.unProvision({'issuerId': '1'});
+                onPressed: () async {
+                  print('calling unProvision...');
+                  try {
+                    final result =
+                        await IdidFlutter.unProvision({'issuerId': '1'});
+                    print('unProvision result: $result');
+                    setState(() {
+                      _isProvisioned();
+                    });
+                  } on Exception catch (e) {
+                    print('unProvision failed: $e');
+                  } catch (error) {
+                    print('unProvision failed: $error');
+                  }
                 },
               ),
             ],

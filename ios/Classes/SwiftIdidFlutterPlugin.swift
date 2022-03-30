@@ -55,12 +55,50 @@ extension IDidChannelMethod {
 
   func unProvision(arguments: [String: Any]?, result: @escaping FlutterResult) {
 
-    result(FlutterMethodNotImplemented)
+    guard let args = arguments else {
+      result(FlutterMethodNotImplemented)
+      return
+    }
+
+      let payload = IDidUnProvisionPayload(
+        issuerId: args["issuerId"] as? String ?? ""
+      )
+
+    let callback = callbackUnProvision(mPayload: payload, result: result)
+
+    let auth = IDidAuthManager.instance
+
+    try! auth.unProvision(callback: callback)
+
   }
+
+  struct callbackUnProvision: IDidUnProvisionCallback {
+    var mPayload: IDidUnProvisionPayload
+    var result: FlutterResult
+    
+    func onError(error: IDidUnProvisionFailed) {
+        print("Erro no desprovisionamento. Erro: \(error.message)")
+        result("Failed")
+    }
+    
+    func onSuccess(value: IDidUnProvisionSucceed) {
+        print("Desprovisionamento realizado com sucesso!")
+        result("Succeeded")
+    }
+  }
+
 
   func authorize(arguments: [String: Any]?, result: @escaping FlutterResult) {
 
-    result(FlutterMethodNotImplemented)
+    guard let args = arguments else {
+      result(FlutterMethodNotImplemented)
+      return
+    }
+
+    let auth = IDidAuthManager.instance
+    auth.authorize(transaction: args["authorizationContent"] as? String ?? "")
+    result("ok")
+    
   }
 
   func provision(arguments: [String: Any]?, result: @escaping FlutterResult) {

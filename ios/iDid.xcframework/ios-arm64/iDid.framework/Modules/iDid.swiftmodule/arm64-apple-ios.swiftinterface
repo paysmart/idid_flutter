@@ -10,6 +10,15 @@ import UIKit
 import UserNotifications
 import _Concurrency
 @_exported import iDid
+public struct IDidUnProvisionFailed {
+  public var message: Swift.String
+}
+public struct IDidUnProvisionSucceed {
+  public var statusCode: Swift.String
+}
+public struct IDidUnProvisionPayload {
+  public init(issuerId: Swift.String)
+}
 extension Foundation.Date {
   public func defaultCardInfo() -> Swift.String
   public func defaultTrack2() -> Swift.String
@@ -23,8 +32,15 @@ public struct IDidDeleteCardRequest : Swift.Decodable {
   public init(version: Swift.String, issuerID: Swift.String, consumerID: Swift.String)
   public init(from decoder: Swift.Decoder) throws
 }
+public struct IDidDeleteConsumerResponse : Swift.Decodable {
+  public init(from decoder: Swift.Decoder) throws
+}
 public struct IDidDataPrepSpec {
   public init(mKDI: Swift.Int, mScheme: Swift.String, mPANSequence: Swift.Int, mProductType: Swift.String, mTrack2EqData: Swift.String, mExpirationDate: Swift.Int64, mDerivationKey: Swift.String)
+}
+public struct IDidDeleteConsumerRequest : Swift.Decodable {
+  public init(version: Swift.String, issuerID: Swift.String, consumerID: Swift.String)
+  public init(from decoder: Swift.Decoder) throws
 }
 public struct IDidRegisterConsumerRequest : Swift.Codable {
   public init(version: Swift.String, documentID: Swift.String, name: Swift.String, email: Swift.String, phoneNumber: Swift.String, deviceID: Swift.String, issuerID: Swift.String, cards: [iDid.IDidCardInfo], deliveryAddress: iDid.IDidAddress)
@@ -66,19 +82,27 @@ public struct IDidAddress : Swift.Codable {
 public class IDidClient {
   public init()
   public func updateConsumer(consumerRequest: iDid.IDidRegisterConsumerRequest, consumerID: Swift.String, completion: @escaping (iDid.IDidPutConsumerResponse?, Foundation.NSError?) -> Swift.Void)
-  public func deleteConsumer(consumerID: Swift.String, completion: @escaping (iDid.IDidPutConsumerResponse?, Foundation.NSError?) -> Swift.Void)
+  public func deleteConsumer(consumerRequest: iDid.IDidDeleteConsumerRequest, completion: @escaping (iDid.IDidDeleteConsumerResponse?, Any?, Foundation.NSError?) -> Swift.Void)
   public func getConsumer(documentId: Swift.String, completion: @escaping (iDid.IDidConsumer?, Any?, Foundation.NSError?) -> Swift.Void)
   public func includeCard(card: iDid.IDidPostCardRequest, completion: @escaping (iDid.IDidPostCardResponse?, Any?, Foundation.NSError?) -> Swift.Void)
   public func deleteCard(card: iDid.IDidDeleteCardRequest, cardID: Swift.String, completion: @escaping (iDid.IDidDeleteCardResponse?, Any?, Foundation.NSError?) -> Swift.Void)
   @objc deinit
 }
 public struct IDidPutConsumerResponse : Swift.Decodable {
+  public var consumerID: Swift.Int
+  public var resultCode: Swift.String
+  public var resultDescription: Swift.String
   public init(from decoder: Swift.Decoder) throws
 }
 @objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) open class NotificationDelegate : UIKit.UIResponder, UIKit.UIApplicationDelegate, UserNotifications.UNUserNotificationCenterDelegate {
   @_Concurrency.MainActor(unsafe) @objc open func userNotificationCenter(_ center: UserNotifications.UNUserNotificationCenter, willPresent notification: UserNotifications.UNNotification, withCompletionHandler completionHandler: @escaping (UserNotifications.UNNotificationPresentationOptions) -> Swift.Void)
   @_Concurrency.MainActor(unsafe) @objc open func userNotificationCenter(_ center: UserNotifications.UNUserNotificationCenter, didReceive response: UserNotifications.UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void)
   @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class UserNotificationCenter {
+  public static func userNotificationCenter(_ center: UserNotifications.UNUserNotificationCenter, willPresent notification: UserNotifications.UNNotification, withCompletionHandler completionHandler: @escaping (UserNotifications.UNNotificationPresentationOptions) -> Swift.Void)
+  public static func userNotificationCenter(_ center: UserNotifications.UNUserNotificationCenter, didReceive response: UserNotifications.UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Swift.Void)
   @objc deinit
 }
 public struct IDidPostCardRequest {
@@ -88,10 +112,16 @@ public struct IDidProvisionFailed {
   public var message: Swift.String
 }
 public struct IDidProvisionSucceed {
+  public var consumerId: Swift.String
   public var cardId: Swift.String
 }
 public struct IDidProvisionPayload {
   public init(issuerId: Swift.String, userName: Swift.String, userEmail: Swift.String, documentId: Swift.String, phoneNumber: Swift.String, address: iDid.IDidAddress, dataPrep: iDid.IDidDataPrepSpec)
+}
+public protocol IDidUnProvisionCallback {
+  var mPayload: iDid.IDidUnProvisionPayload { get set }
+  func onError(error: iDid.IDidUnProvisionFailed)
+  func onSuccess(value: iDid.IDidUnProvisionSucceed)
 }
 public class IDidNotificationManager {
   public init()
@@ -105,6 +135,7 @@ public class IDidVCardManager {
   public func containsPAN(pan: Swift.String) -> Swift.Bool
   public func containsVCardId(cardId: Swift.String) -> Swift.Bool
   public func manageVCard(data: iDid.IDidVCard)
+  public func clear()
   public func getCardById(cardId: Swift.String) -> iDid.IDidVCard?
   public func newCryptogramFor(vCardId: Swift.String, amount: Swift.Double, currentDate: Foundation.Date, un: Swift.Int) throws -> Swift.String
   public func incrementAndGet(cardId: Swift.String)
@@ -112,15 +143,26 @@ public class IDidVCardManager {
 }
 public class IDidAuth {
   public init()
+  public func authorize(transaction: Swift.String)
   public func isProvisioned() -> Swift.Bool
+  public func unProvision(callback: iDid.IDidUnProvisionCallback) throws
   public func provision(callback: iDid.IDidProvisionCallback) throws
   @objc deinit
 }
 public struct IDidPostCardResponse : Swift.Decodable {
+  public var cardID: Swift.String
+  public var consumerID: Swift.String
+  public var resultCode: Swift.String
+  public var resultDescription: Swift.String
   public init(cardID: Swift.String, consumerID: Swift.String, resultCode: Swift.String, resultDescription: Swift.String)
   public init(from decoder: Swift.Decoder) throws
 }
 public struct IDidConsumer : Swift.Codable {
+  public var id: Swift.Int
+  public var registered: Swift.Bool
+  public var name: Swift.String, email: Swift.String, phoneNumber: Swift.String
+  public var cards: [iDid.IDidCardInfo]
+  public var deliveryAddress: iDid.IDidAddress?
   public init(id: Swift.Int, registered: Swift.Bool, name: Swift.String, email: Swift.String, phoneNumber: Swift.String, cards: [iDid.IDidCardInfo], deliveryAddress: iDid.IDidAddress)
   public func encode(to encoder: Swift.Encoder) throws
   public init(from decoder: Swift.Decoder) throws
@@ -130,7 +172,14 @@ extension Swift.StringProtocol {
   public func asHexArray() throws -> [Swift.UInt8]
 }
 public struct IDidDeleteCardResponse : Swift.Decodable {
+  public var resultCode: Swift.String
+  public var resultDescription: Swift.String
+  public var consumerID: Swift.String
   public init(from decoder: Swift.Decoder) throws
+}
+@_hasMissingDesignatedInitializers public class IDidAuthManager {
+  public static var instance: iDid.IDidAuth
+  @objc deinit
 }
 public struct IDidCardInfo : Swift.Codable {
   public init(id: Swift.String, lastFour: Swift.String, bin: Swift.String, preferentialCard: Swift.Bool = false, expirationDate: Swift.String, brand: Swift.String, productType: Swift.String, consumerContact: Swift.Bool = false, nickname: Swift.String, zipCode: Swift.String, active: Swift.Bool = false, email: Swift.String, phoneNumber: Swift.String, deliveryAddress: iDid.IDidAddress, billingAddress: iDid.IDidAddress, mailingAddress: iDid.IDidAddress)
