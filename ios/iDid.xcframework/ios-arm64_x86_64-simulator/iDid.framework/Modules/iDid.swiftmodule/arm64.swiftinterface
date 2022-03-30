@@ -141,6 +141,10 @@ public class IDidVCardManager {
   public func incrementAndGet(cardId: Swift.String)
   @objc deinit
 }
+@_hasMissingDesignatedInitializers public class IDidTransactionApprovalResponse : Swift.Decodable {
+  @objc deinit
+  required public init(from decoder: Swift.Decoder) throws
+}
 public class IDidAuth {
   public init()
   public func authorize(transaction: Swift.String)
