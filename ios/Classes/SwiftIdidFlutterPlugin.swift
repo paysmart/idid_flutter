@@ -87,7 +87,6 @@ extension IDidChannelMethod {
     }
   }
 
-
   func authorize(arguments: [String: Any]?, result: @escaping FlutterResult) {
 
     guard let args = arguments else {
