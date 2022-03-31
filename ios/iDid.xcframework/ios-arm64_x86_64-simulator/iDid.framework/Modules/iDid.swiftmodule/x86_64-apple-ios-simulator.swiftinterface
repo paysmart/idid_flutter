@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import _Concurrency
 @_exported import iDid
+import os
 public struct IDidUnProvisionFailed {
   public var message: Swift.String
 }

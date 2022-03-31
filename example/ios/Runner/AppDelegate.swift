@@ -1,6 +1,7 @@
 import UIKit
 import Flutter
 import iDid
+import UserNotifications
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -20,7 +21,7 @@ import iDid
   override func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("userNotificaionCenter -> UNNotification")
+        NSLog("userNotificaionCenter -> willPresent")
         
         UserNotificationCenter.userNotificationCenter(center, willPresent: notification, withCompletionHandler: completionHandler)
     }
@@ -28,6 +29,7 @@ import iDid
   override func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
+        NSLog("userNotificaionCenter -> didReceive")
         if response.notification.request.content.categoryIdentifier == "ididNotificationCenter" {
             UserNotificationCenter.userNotificationCenter(center, didReceive: response, withCompletionHandler: completionHandler)
             return
